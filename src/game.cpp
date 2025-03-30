@@ -6,10 +6,13 @@ Game::Game(int size) : board(size) {
 }
 
 void Game::run() {
+    bool isCorrectMove = true;
     while (!board.isSolved()) {
+        board.moveNumber(isCorrectMove);
         board.print();
         char move = InputHandler::getUserInput();
-        board.moveTile(move);
+        isCorrectMove = board.moveTile(move);
+        std::system("clear");
     }
     std::cout << "Congratulations! Puzzle solved.\n";
 }

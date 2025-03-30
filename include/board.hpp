@@ -7,6 +7,7 @@ private:
     std::vector<std::vector<int>> tiles;
     int size;
     int emptyRow, emptyCol;
+    int numberOfMoves;
 
 public:
     Board(int size);
@@ -14,4 +15,5 @@ public:
     bool moveTile(char direction);
     bool isSolved() const;
     void print() const;
+    void moveNumber(bool isCorrectMove);
 };
