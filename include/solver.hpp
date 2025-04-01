@@ -1,5 +1,4 @@
-#ifndef SOLVER_HPP
-#define SOLVER_HPP
+#pragma once
 
 #include "board.hpp"
 #include <queue>
@@ -15,5 +14,3 @@ private:
     Board initialBoard;
     std::string serialize(const Board& board) const;
 };
-
-#endif
