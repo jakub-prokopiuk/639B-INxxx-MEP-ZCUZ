@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 
 INCLUDE_DIR = include
 
-SRC = src/main.cpp src/game.cpp src/board.cpp src/inputhandler.cpp
+SRC = src/main.cpp src/game.cpp src/board.cpp src/inputhandler.cpp src/solver.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

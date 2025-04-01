@@ -25,8 +25,8 @@ void Board::shuffle() {
     std::shuffle(flatTiles.begin(), flatTiles.end(), g);
 
     int index = 0;
-    for (int i = 0; i < tiles.size(); ++i) {
-        for (int j = 0; j < tiles.size(); ++j) {
+    for (std::size_t i = 0; i < tiles.size(); ++i) {
+        for (std::size_t j = 0; j < tiles.size(); ++j) {
             tiles[i][j] = flatTiles[index++];
             if (tiles[i][j] == 0) {
                 emptyRow = i;
@@ -35,6 +35,29 @@ void Board::shuffle() {
         }
     }
 }
+
+bool Board::isSolvable() const {
+    std::vector<int> flatTiles;
+    for (const auto& row : tiles) {
+        for (int tile : row) {
+            if (tile != 0) {
+                flatTiles.push_back(tile);
+            }
+        }
+    }
+
+    int inversions = 0;
+    for (size_t i = 0; i < flatTiles.size(); ++i) {
+        for (size_t j = i + 1; j < flatTiles.size(); ++j) {
+            if (flatTiles[i] > flatTiles[j]) {
+                ++inversions;
+            }
+        }
+    }
+
+    return inversions % 2 == 0;
+}
+
 
 
 bool Board::moveTile(char direction) {
@@ -49,7 +72,7 @@ bool Board::moveTile(char direction) {
         default: return false;
     }
 
-    if (newRow >= 0 && newRow < tiles.size() && newCol >= 0 && newCol < tiles.size()) {
+    if (newRow >= 0 && newRow < static_cast<int>(tiles.size()) && newCol >= 0 && newCol < static_cast<int>(tiles.size())) {
         std::swap(tiles[emptyRow][emptyCol], tiles[newRow][newCol]);
         emptyRow = newRow;
         emptyCol = newCol;

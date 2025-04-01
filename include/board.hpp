@@ -16,4 +16,7 @@ public:
     bool isSolved() const;
     void print() const;
     void moveNumber(bool isCorrectMove);
+    const std::vector<std::vector<int>>& getTiles() const { return tiles; }
+    int getNumberOfMoves() const { return numberOfMoves; }
+    bool isSolvable() const;
 };
