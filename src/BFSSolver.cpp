@@ -1,10 +1,9 @@
-#include "solver.hpp"
-#include <unordered_set>
+#include "BFSSolver.hpp"
 #include <map>
 
-Solver::Solver(Board& board) : initialBoard(board) {}
+BFSSolver::BFSSolver(Board& board) : Solver(board) {}
 
-std::string Solver::serialize(const Board& board) const {
+std::string BFSSolver::serialize(const Board& board) const {
     std::string state;
     for (const auto& row : board.getTiles()) {
         for (int tile : row) {
@@ -14,7 +13,7 @@ std::string Solver::serialize(const Board& board) const {
     return state;
 }
 
-std::vector<char> Solver::solve() {
+std::vector<char> BFSSolver::solve() {
     std::queue<std::pair<Board, std::vector<char>>> q;
     std::unordered_set<std::string> visited;
     std::map<char, std::pair<int, int>> moves = {{'w', {-1, 0}}, {'s', {1, 0}}, {'a', {0, -1}}, {'d', {0, 1}}};

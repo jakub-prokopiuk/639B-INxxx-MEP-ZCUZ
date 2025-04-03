@@ -1,6 +1,6 @@
 #pragma once
 
-#include "board.hpp"
+#include "Board.hpp"
 #include <queue>
 #include <set>
 #include <vector>
@@ -10,7 +10,7 @@ public:
     Solver(Board& board);
     std::vector<char> solve();
 
-private:
+protected:
     Board initialBoard;
     std::string serialize(const Board& board) const;
 };

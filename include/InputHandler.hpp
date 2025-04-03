@@ -1,5 +1,5 @@
 #pragma once
-#include "board.hpp"
+#include "Board.hpp"
 
 class InputHandler {
 public:

@@ -1,4 +1,4 @@
-#include "inputhandler.hpp"
+#include "InputHandler.hpp"
 #include <iostream>
 
 char InputHandler::getUserInput() {
