@@ -106,9 +106,7 @@ void Board::print() const {
 }
 
 void Board::moveNumber(bool isCorrectMove) {
-    std::cout << "It's your move number " << numberOfMoves << "\n";
-    if (isCorrectMove)
-    {
+    if (isCorrectMove) {
         numberOfMoves++;
     }
 }

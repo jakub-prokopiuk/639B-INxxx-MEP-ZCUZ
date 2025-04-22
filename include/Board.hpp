@@ -19,4 +19,8 @@ public:
     const std::vector<std::vector<int>>& getTiles() const { return tiles; }
     int getNumberOfMoves() const { return numberOfMoves; }
     bool isSolvable() const;
+    int getEmptyRow() const { return emptyRow; }
+    int getEmptyCol() const { return emptyCol; }
+    int getMoveCount() const { return numberOfMoves; }
+    int getSize() const { return size; }
 };

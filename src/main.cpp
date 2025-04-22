@@ -1,18 +1,11 @@
-#include "Game.hpp"
-#include <iostream>
+#include <QApplication>
+#include "PuzzleWindow.hpp"
 
-int main() {
-    int size;
-    std::string playerName;
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
 
-    std::cout << "Enter board size (e.g., 3 for 3x3): ";
-    std::cin >> size;
+    PuzzleWindow window;
+    window.show();
 
-    std::cout << "Enter your name: ";
-    std::cin >> playerName;
-
-    Game game(size, playerName);
-    game.run();
-
-    return 0;
+    return app.exec();
 }
