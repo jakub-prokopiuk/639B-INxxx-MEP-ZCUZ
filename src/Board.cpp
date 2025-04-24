@@ -11,7 +11,6 @@ Board::Board(int size) : size(size) {
     tiles[size - 1][size - 1] = 0;
     emptyRow = size - 1;
     emptyCol = size - 1;
-    numberOfMoves = 1;
 }
 
 void Board::shuffle() {
@@ -105,10 +104,4 @@ void Board::print() const {
     }
 }
 
-void Board::moveNumber(bool isCorrectMove) {
-    std::cout << "It's your move number " << numberOfMoves << "\n";
-    if (isCorrectMove)
-    {
-        numberOfMoves++;
-    }
-}
+

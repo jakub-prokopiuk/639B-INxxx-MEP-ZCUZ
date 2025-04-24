@@ -6,6 +6,6 @@
 3. Run the following commands in the terminal:
     ```bash
     make
-    ./puzzle
+    make run
     ```
     

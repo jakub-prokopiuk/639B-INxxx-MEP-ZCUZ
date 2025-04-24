@@ -33,6 +33,7 @@ void Game::run() {
 void Game::handleMove(char move) {
     if (board.moveTile(move)) {
         player.incrementMoves();
+        std::cout << "Move number: " << player.getMoveCount() << "\n";
     }
 }
 
@@ -45,6 +46,7 @@ void Game::handleSolver() {
         board.moveTile(m);
         player.incrementMoves();
         board.print();
+        std::cout << "Current move count: " << player.getMoveCount() << "\n";
         std::cout << "-------------------" << "\n";
         std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }

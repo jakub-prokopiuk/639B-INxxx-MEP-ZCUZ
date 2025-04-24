@@ -9,6 +9,4 @@ public:
     BFSSolver(Board& board);
     std::vector<char> solve();
 
-private:
-    std::string serialize(const Board& board) const;
 };
