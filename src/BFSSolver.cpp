@@ -3,16 +3,6 @@
 
 BFSSolver::BFSSolver(Board& board) : Solver(board) {}
 
-std::string BFSSolver::serialize(const Board& board) const {
-    std::string state;
-    for (const auto& row : board.getTiles()) {
-        for (int tile : row) {
-            state += std::to_string(tile) + ",";
-        }
-    }
-    return state;
-}
-
 std::vector<char> BFSSolver::solve() {
     std::queue<std::pair<Board, std::vector<char>>> q;
     std::unordered_set<std::string> visited;

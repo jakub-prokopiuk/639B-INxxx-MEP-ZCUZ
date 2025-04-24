@@ -23,7 +23,6 @@ private slots:
     void handleButtonClick();
     void solvePuzzle();
     void updateMoveCounter();
-    void setupCounter();
     
 private:
     void setupBoard();

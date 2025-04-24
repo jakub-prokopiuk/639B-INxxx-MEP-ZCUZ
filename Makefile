@@ -5,7 +5,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -fPIC $(shell pkg-config --cflags Qt5Widgets
 
 INCLUDE_DIR = include
 
-SRC = src/main.cpp src/Game.cpp src/Board.cpp src/InputHandler.cpp src/Solver.cpp src/BFSSolver.cpp src/Player.cpp src/PuzzleWindow.cpp src/moc_PuzzleWindow.cpp
+SRC = src/main.cpp src/Board.cpp  src/Solver.cpp src/BFSSolver.cpp src/Player.cpp src/PuzzleWindow.cpp src/moc_PuzzleWindow.cpp
 OBJ = $(SRC:.cpp=.o)
 
 LDFLAGS = $(shell pkg-config --libs Qt5Widgets)

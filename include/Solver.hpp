@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Board.hpp"
+#include "ISolver.hpp"
 #include <queue>
 #include <set>
 #include <vector>
 
-class Solver {
+class Solver : public ISolver {
 public:
-    Solver(Board& board);
-    std::vector<char> solve();
+    explicit Solver(Board& board);
+    std::vector<char> solve() override;
 
 protected:
     Board initialBoard;

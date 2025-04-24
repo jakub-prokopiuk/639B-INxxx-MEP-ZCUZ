@@ -6,7 +6,7 @@ void Player::incrementMoves() {
     moveCount++;
 }
 
-int Player::getMoveCount() const {
+int Player::getNumberOfMoves() const {
     return moveCount;
 }
 

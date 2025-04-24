@@ -1,6 +1,7 @@
 #include "Board.hpp"
 #include <algorithm>
 #include <random>
+#include <iostream>
 
 Board::Board(int size) : size(size) {
     tiles.resize(size, std::vector<int>(size));
@@ -11,7 +12,6 @@ Board::Board(int size) : size(size) {
     tiles[size - 1][size - 1] = 0;
     emptyRow = size - 1;
     emptyCol = size - 1;
-    numberOfMoves = 1;
 }
 
 void Board::shuffle() {
@@ -25,8 +25,8 @@ void Board::shuffle() {
     std::shuffle(flatTiles.begin(), flatTiles.end(), g);
 
     int index = 0;
-    for (std::size_t i = 0; i < tiles.size(); ++i) {
-        for (std::size_t j = 0; j < tiles.size(); ++j) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
             tiles[i][j] = flatTiles[index++];
             if (tiles[i][j] == 0) {
                 emptyRow = i;
@@ -58,8 +58,6 @@ bool Board::isSolvable() const {
     return inversions % 2 == 0;
 }
 
-
-
 bool Board::moveTile(char direction) {
     int newRow = emptyRow;
     int newCol = emptyCol;
@@ -72,15 +70,15 @@ bool Board::moveTile(char direction) {
         default: return false;
     }
 
-    if (newRow >= 0 && newRow < static_cast<int>(tiles.size()) && newCol >= 0 && newCol < static_cast<int>(tiles.size())) {
+    if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
         std::swap(tiles[emptyRow][emptyCol], tiles[newRow][newCol]);
         emptyRow = newRow;
         emptyCol = newCol;
         return true;
     }
+
     return false;
 }
-
 
 bool Board::isSolved() const {
     int num = 1;
@@ -96,17 +94,10 @@ bool Board::isSolved() const {
     return true;
 }
 
-
 void Board::print() const {
     for (const auto& row : tiles) {
         for (int tile : row)
             std::cout << (tile ? std::to_string(tile) : "_") << " ";
         std::cout << "\n";
-    }
-}
-
-void Board::moveNumber(bool isCorrectMove) {
-    if (isCorrectMove) {
-        numberOfMoves++;
     }
 }

@@ -7,7 +7,7 @@ public:
     Player(const std::string& name);
 
     void incrementMoves();
-    int getMoveCount() const;
+    int getNumberOfMoves() const;
     std::string getName() const;
 
 private:

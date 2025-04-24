@@ -5,105 +5,83 @@
 #include <QTimer>
 
 PuzzleWindow::PuzzleWindow(QWidget* parent)
-    : QWidget(parent), moveCount(0), boardSize(3), board(boardSize), player(nullptr) {
+    : QWidget(parent), boardSize(3), board(boardSize), player(nullptr) {
     setWindowTitle("Puzzle Game");
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     QHBoxLayout* controlsLayout = new QHBoxLayout();
     mainLayout->addLayout(controlsLayout);
 
-    
     nameInput = new QLineEdit();
     nameInput->setPlaceholderText("Enter your name");
     controlsLayout->addWidget(nameInput);
 
-    
     sizeComboBox = new QComboBox();
     sizeComboBox->addItem("3x3");
     sizeComboBox->addItem("4x4");
     sizeComboBox->addItem("5x5");
     controlsLayout->addWidget(sizeComboBox);
 
-    
     startButton = new QPushButton("Start Game");
     controlsLayout->addWidget(startButton);
     connect(startButton, &QPushButton::clicked, this, &PuzzleWindow::startGame);
 
-    
     solveButton = new QPushButton("Solve");
     solveButton->setEnabled(false);
     controlsLayout->addWidget(solveButton);
     connect(solveButton, &QPushButton::clicked, this, &PuzzleWindow::solvePuzzle);
 
-    
     moveCounterLabel = new QLabel("");
     mainLayout->addWidget(moveCounterLabel);
 
-    
     playerNameLabel = new QLabel("");
     mainLayout->addWidget(playerNameLabel);
 
     gridLayout = new QGridLayout();
     mainLayout->addLayout(gridLayout);
-
-    
 }
 
 PuzzleWindow::~PuzzleWindow() {
-    delete player;  
+    delete player;
 }
 
 void PuzzleWindow::startGame() {
-    
     QString playerName = nameInput->text();
     if (playerName.isEmpty()) {
         QMessageBox::warning(this, "Input Error", "Please enter your name.");
         return;
     }
 
-    
+    delete player;
     player = new Player(playerName.toStdString());
-
-    
     playerNameLabel->setText("Player: " + playerName);
+    moveCounterLabel->setText("Moves: 0");
 
-    
     QString selectedSize = sizeComboBox->currentText();
-    if (selectedSize == "3x3") {
-        boardSize = 3;
-    } else if (selectedSize == "4x4") {
-        boardSize = 4;
-    } else if (selectedSize == "5x5") {
-        boardSize = 5;
-    }
+    if (selectedSize == "3x3") boardSize = 3;
+    else if (selectedSize == "4x4") boardSize = 4;
+    else if (selectedSize == "5x5") boardSize = 5;
 
-    
-    board = Board(boardSize);  
-    moveCount = 0;  
-    setupCounter();  
-    setupBoard();  
-    
+    board = Board(boardSize);
+    setupBoard();
+
     do {
         board.shuffle();
     } while (!board.isSolvable());
 
-    
     sizeComboBox->setEnabled(false);
     startButton->setEnabled(false);
-    solveButton->setEnabled(true);  
-    nameInput->setEnabled(false);  
+    solveButton->setEnabled(true);
+    nameInput->setEnabled(false);
     updateBoard();
 }
 
 void PuzzleWindow::setupBoard() {
-    
-    for (auto& row : buttons) {
-        for (auto* button : row) {
-            delete button;  
-        }
-    }
-    buttons.clear();  
-    
+    for (auto& row : buttons)
+        for (auto* button : row)
+            delete button;
+
+    buttons.clear();
     buttons.resize(boardSize, std::vector<QPushButton*>(boardSize, nullptr));
 
     for (int i = 0; i < boardSize; ++i) {
@@ -117,6 +95,7 @@ void PuzzleWindow::setupBoard() {
         }
     }
 }
+
 void PuzzleWindow::updateBoard() {
     const auto& tiles = board.getTiles();
     for (int i = 0; i < boardSize; ++i) {
@@ -157,19 +136,18 @@ void PuzzleWindow::handleButtonClick() {
     else if (dRow == 0 && dCol == -1) direction = 'd';
 
     if (direction != '\0' && board.moveTile(direction)) {
-        board.moveNumber(true);  
-        updateMoveCounter();  
+        player->incrementMoves();
+        updateMoveCounter();
         updateBoard();
 
-        
         if (board.isSolved()) {
             QString playerName = playerNameLabel->text();
-            playerName.remove("Player: ");  
-        
-            QMessageBox::information(this, "Solved", "Congratulations, " + playerName + "! Puzzle solved in " + QString::number(board.getNumberOfMoves() - 1) + " moves.");
+            playerName.remove("Player: ");
+            QMessageBox::information(this, "Solved", "Congratulations, " + playerName + "! Puzzle solved in " + QString::number(player->getNumberOfMoves()) + " moves.");
         }
     }
 }
+
 void PuzzleWindow::solvePuzzle() {
     Solver solver(board);
     auto moves = solver.solve();
@@ -180,7 +158,6 @@ void PuzzleWindow::solvePuzzle() {
     }
 
     performMoves(moves);
-    
 }
 
 void PuzzleWindow::performMoves(const std::vector<char>& moves) {
@@ -191,19 +168,19 @@ void PuzzleWindow::performMoves(const std::vector<char>& moves) {
     remainingMoves.erase(remainingMoves.begin());
 
     board.moveTile(nextMove);
-    board.moveNumber(true);  
-    updateMoveCounter();  
+    player->incrementMoves();
+    updateMoveCounter();
     updateBoard();
 
     if (board.isSolved()) {
-    QString playerName = playerNameLabel->text();
-    playerName.remove("Player: ");  
-    QMessageBox::information(this, "Solved", "Congratulations, " + playerName + "! Puzzle solved in " + QString::number(board.getNumberOfMoves() - 1) + " moves.");
-        
+        QString playerName = playerNameLabel->text();
+        playerName.remove("Player: ");
+        QMessageBox::information(this, "Solved", "Congratulations, " + playerName + "! Puzzle solved in " + QString::number(player->getNumberOfMoves()) + " moves.");
+
         sizeComboBox->setEnabled(true);
         startButton->setEnabled(true);
-        solveButton->setEnabled(false);  
-        nameInput->setEnabled(true);  
+        solveButton->setEnabled(false);
+        nameInput->setEnabled(true);
     }
 
     if (!remainingMoves.empty()) {
@@ -214,11 +191,5 @@ void PuzzleWindow::performMoves(const std::vector<char>& moves) {
 }
 
 void PuzzleWindow::updateMoveCounter() {
-    moveCount++;
-    moveCounterLabel->setText("Moves: " + QString::number(moveCount));
-}
-
-void PuzzleWindow::setupCounter() {
-    moveCount = 0;
-    moveCounterLabel->setText("Moves: " + QString::number(moveCount));
+    moveCounterLabel->setText("Moves: " + QString::number(player->getNumberOfMoves()));
 }
